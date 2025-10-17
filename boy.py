@@ -46,6 +46,22 @@ class Run:
         else: # face_dir == -1: # left
             self.boy.image.clip_draw(self.boy.frame * 100, 0, 100, 100, self.boy.x, self.boy.y)
 
+class AutoRun:
+    def __init__(self, boy):
+        self.boy = boy
+
+    def enter(self, e):
+        pass
+
+    def exit(self, e):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
+
 
 class Sleep:
     def __init__(self, boy):
