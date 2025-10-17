@@ -52,7 +52,7 @@ class AutoRun:
         self.start_time = 0
 
     def enter(self, e):
-        self.boy.dir = self.boy.face_dir = 1
+        self.boy.dir = self.boy.face_dir
         self.start_time = get_time()
         pass
 
@@ -63,10 +63,10 @@ class AutoRun:
         self.boy.frame = (self.boy.frame + 1) % 8
         self.boy.x += self.boy.dir * 7
 
-        if self.boy.x > 800:
+        if self.boy.x > 760:
             self.boy.dir = -1
             self.boy.face_dir = -1
-        elif self.boy.x < 0:
+        elif self.boy.x < 40:
             self.boy.dir = 1
             self.boy.face_dir = 1
 
