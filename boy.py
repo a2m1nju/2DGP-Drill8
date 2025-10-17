@@ -49,9 +49,11 @@ class Run:
 class AutoRun:
     def __init__(self, boy):
         self.boy = boy
+        self.start_time = 0
 
     def enter(self, e):
         self.boy.dir = self.boy.face_dir = 1
+        self.start_time = get_time()
         pass
 
     def exit(self, e):
@@ -59,7 +61,7 @@ class AutoRun:
 
     def do(self):
         self.boy.frame = (self.boy.frame + 1) % 8
-        self.boy.x += self.boy.dir * 5
+        self.boy.x += self.boy.dir * 7
 
         if self.boy.x > 800:
             self.boy.dir = -1
@@ -67,6 +69,9 @@ class AutoRun:
         elif self.boy.x < 0:
             self.boy.dir = 1
             self.boy.face_dir = 1
+
+        if get_time() - self.start_time > 5.0:
+            self.boy.state_machine.handle_state_event(('TIMEOUT', None))
         pass
 
     def draw(self):
@@ -97,7 +102,7 @@ class Sleep:
         else: # face_dir == -1: # left
             self.boy.image.clip_composite_draw(self.boy.frame * 100, 200, 100, 100, -3.141592/2,
 
-                                                '', self.boy.x + 25, self.boy.y + 25, 100, 100)
+                                                '', self.boy.x - 25, self.boy.y - 25, 100, 100)
 
 class Idle:
     def __init__(self, boy):
@@ -141,7 +146,7 @@ class Boy:
                 self.IDLE: {right_up:self.RUN, left_up:self.RUN, right_down:self.RUN, left_down:self.RUN,
                             time_out: self.SLEEP, a_down: self.AUTO_RUN},
                 self.RUN : {right_up:self.IDLE, right_down:self.IDLE, left_down:self.IDLE, left_up:self.IDLE},
-                self.AUTO_RUN : {a_down: self.IDLE}
+                self.AUTO_RUN : {time_out: self.IDLE}
             }
         )
 
