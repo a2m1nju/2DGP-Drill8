@@ -4,10 +4,13 @@ from state_machine import StateMachine
 
 def right_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT
+
 def right_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_RIGHT
+
 def left_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_LEFT
+
 def left_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
 
@@ -59,7 +62,7 @@ class Sleep:
             self.boy.image.clip_composite_draw(self.boy.frame * 100, 300, 100, 100, 3.141592/2,
                                                '', self.boy.x - 25, self.boy.y - 25, 100, 100)
         else: # face_dir == -1: # left
-            self.boy.image.clip_composite_drawe(self.boy.frame * 100, 200, 100, 100, -3.141592/2,
+            self.boy.image.clip_composite_draw(self.boy.frame * 100, 200, 100, 100, -3.141592/2,
 
                                                 '', self.boy.x + 25, self.boy.y + 25, 100, 100)
 
@@ -90,7 +93,7 @@ class Boy:
         self.x, self.y = 400, 90
         self.frame = 0
         self.face_dir = 1
-        self.dir = 0
+        self.dir = 1
         self.image = load_image('animation_sheet.png')
 
         self.IDLE = Idle(self)
@@ -99,9 +102,9 @@ class Boy:
         self.state_machine = StateMachine(
             self.IDLE, #시작상태
             {
-                self.SLEEP: {space_down: self.IDLE, right_down:self.RUN, left_down:self.RUN, left_up:self.RUN},
+                self.SLEEP: {space_down: self.IDLE, right_down:self.RUN, left_down:self.RUN, left_up:self.RUN, right_up:self.RUN},
                 self.IDLE: {right_up:self.RUN, left_up:self.RUN, right_down:self.RUN, left_down:self.RUN, time_out: self.SLEEP},
-                self.RUN : {right_down:self.IDLE, left_down:self.IDLE, left_up:self.IDLE}
+                self.RUN : {right_up:self.IDLE, right_down:self.IDLE, left_down:self.IDLE, left_up:self.IDLE}
             }
         )
 
@@ -113,5 +116,4 @@ class Boy:
 
     def handle_event(self, event):
         self.state_machine.handle_state_event(('INPUT', event))
-
         pass

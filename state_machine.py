@@ -3,7 +3,7 @@ from event_to_string import event_to_string
 class StateMachine:
     def __init__(self, start_state, rules):
         self.cur_state = start_state
-        self.cur_state.enter(('START', 0)) # 앤트리 액션을 어쩌고
+        self.cur_state.enter(('START', 0))
         self.rules = rules
 
     def update(self):
@@ -12,7 +12,7 @@ class StateMachine:
     def draw(self):
         self.cur_state.draw()
 
-    def handle_state_event(self, state_event): #스테이트에서 아이들을 연결해주는?
+    def handle_state_event(self, state_event):
         for check_event in self.rules[self.cur_state].keys():
             if check_event(state_event):
                 self.next_state = self.rules[self.cur_state][check_event]
